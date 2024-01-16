@@ -1,0 +1,40 @@
+.dock {
+  .widget {
+    @include floating_widget($pad: 0.5rem);
+
+    .launcher_btn {
+      @include button($flat: true, $radius: $radius);
+      font-size: 2rem;
+      padding: 1rem 1.2rem;
+    }
+
+    .indicator {
+      padding: .2rem;
+      margin: 0 1.5rem;
+      border-radius: $radius;
+      &.open {
+        background-color: transparentize($fg_color, 0.75);
+      }
+
+      &.active {
+        background-color: $accent;
+      }
+    }
+
+    .separator {
+      background: $hover;
+      padding: .1rem;
+      border-radius: $radius;
+      margin: .5rem;
+    }
+
+    .icons {
+      @include button($flat: true, $radius: $radius, $pad: 0);
+      padding: 0.4rem 0.6rem;
+
+      .icon {
+        @include icon_image($size: 3.5rem);
+      }
+    }
+  }
+}

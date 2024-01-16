@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# get opts 
+
+
+cryptsetup -y -v luksFormat /dev/sda2 
+cryptsetup open /dev/sda2 main
+
+mkfs.ext4 /dev/mapper/main
+mkfs.fat -F32 /dev/sda1
+
+mount /dev/mapper/main /mnt
+
+dd if=/dev/zero of=/mnt/swapfile count=8k status=progress
+mkswap -U clear /mnt/swapfile
+chmod 0600 /mnt/swapfile
+swapon /swapfile
+
+mkdir /mnt/efi && mount -o fmask=0137,dmsak=0027 /dev/sda1 /mnt/efi
+
+pacstrap /mnt base base-devel linux linux-firmware neovim sbctl intel-ucode plymouth iwd
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+
+ln -sf /usr/share/zoneinfo/GB /etc/localtime && hwclock --systohc
+sed -i 's/#\(en_GB.UTF-8 UTF-8\)/\1/' /etc/locale.gen && locale-gen
+
+echo "LANG=en_GB.UTF-8" > /etc/locale.conf
+echo "EDITOR=/bin/nvim" >> /etc/envioment
+echo "VISUAL=/bin/nvim" >> /etc/envioment
+echo "KEYMAP=UK" > /etc/vconsole.conf
+echo "archlinux" > /etc/hostname
+echo > /etc/securetty
+
+##SETUP NETWORK##
+
+
+## use chpasswd instead 
+
+
+useradd admin && echo -e "passwd1\n$passwd1" | passwd admin
+useradd admin && echo -e "passwd1\n$passwd2" | passwd $user
+
+usermod -d / admin
+usermod -d / root
+
+rmdir /root
+
+chmod 500 /home/$user
+
+##EDIT MKINITCPIO.CONF##
+##create sbctl keys##
+
+##ADD sbctl pacman hook##
+# pacman git repo build hook
+# pacman config pull hook
+
+cat > /etc/mkinitcpio.d/linux.preset <<- END
+	ALL_kver="/boot/vmlinuz-linux"
+	ALL_microcode=(/boot/*-ucode.img)
+
+	PRESETS=('default')
+
+	default_image="/boot/initramfs-linux.img"
+	default_uki="/efi/EFI/Linux/archlinux.efi"
+END
+
+echo "rd.luks.name=$()=main root=/dev/mapper/main quiet splash resume=/dev/mapper/main" > /etc/kernel/cmdline
+
+bootctl install
+mkinitcpio -P
+
+echo "title	archlinux" > /efi/loader/entries/archlinux.conf
+echo "efi	/EFI/Linux/archlinux.efi" >> /efi/loader/entries/archlinux.conf
+
+bootctl update
+
+# add package repo set as either local or url#
+
+# install packages for txt file
+
+while IFS= read -r package; do
+	sudo pacman -S --no-confirm "$package"
+done < packages.txt
+
+
+exit && reboot

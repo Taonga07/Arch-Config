@@ -1,0 +1,6 @@
+.desktop {
+  .info {
+    text-shadow: $text_shadow;
+    @include date($font_size: 10rem);
+  }
+}

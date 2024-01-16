@@ -1,0 +1,33 @@
+(defwidget launcher_app [app]
+  (button 
+    :onclick "actions launcher open ${app.id}"
+    :onrightclick "scripts/apps add ${app.id}"
+    :timeout "300ms"
+    (box 
+      :space-evenly false
+      :spacing 10 
+      (box 
+        :class "icon" 
+        :style "background-image: url('${app.icon}');"
+        :halign "center" 
+        :valign "center"
+      )
+      (box 
+        :orientation "v" 
+        :space-evenly false 
+        :spacing 5 
+        :valign {app.description != "null" ? "start" : "center"}
+        :halign "start"
+        (label :class "name" :text {app.name} :halign "start")
+        (label
+          :visible {app.description != "null"}
+          :class "comment"
+          :text {app.description}  
+          :halign "start"
+          :wrap true
+          :xalign 0
+        )
+      )
+    )
+  )
+)

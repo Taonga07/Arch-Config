@@ -1,0 +1,62 @@
+(defwidget notification_center []
+  (revealer 
+    :transition "slideleft" 
+    :reveal noti_center_rev
+    (box 
+      :class "notification_center"
+      :orientation "v"
+      :space-evenly false
+      (box 
+        :class "widget" 
+        :orientation "v" 
+        :space-evenly false
+        (box 
+          :class "header"
+          :space-evenly false
+          :hexpand true
+          (label :class "label" :text "Notification Center")
+          (revealer 
+            :reveal {arraylength(notifications.notifications) > 0}
+            :transition "slideleft"
+            :halign "end"
+            :hexpand true
+            (eventbox 
+              :cursor "pointer"
+              (button 
+                :class "clear" 
+                :onclick "scripts/notifications clear" 
+                ""
+              )
+            )
+          )
+        )
+        (scroll 
+          :class "scroll" 
+          :vscroll true
+          (box
+            :class "notifications"
+            :orientation "v"  
+            :spacing 10 
+            :space-evenly "false"
+            (box 
+              :visible {arraylength(notifications.notifications) == 0}
+              :class "empty"
+              :valign  "center"
+              :vexpand true
+              :orientation "v" 
+              :space-evenly "false" 
+              (box :class "bell") 
+              (label :class "label" :text "No Notifications")
+            )
+            (for i in {notifications.notifications}
+              (eventbox 
+                :class "notification"
+                (notification :notification i :showtime true)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)

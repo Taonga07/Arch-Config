@@ -1,0 +1,24 @@
+.overview {
+  .widget {
+    @include floating_widget;
+
+    .workspace {
+      @include button;
+
+      .indicator {
+        padding: .25rem;
+        margin: .4rem 4rem;
+        background-color: $accent;
+        border-radius: $radius;
+      }
+
+      .window {
+        @include button($pad: 0);
+      }
+
+      .icon {
+        @include icon_image($size: 3rem)
+      }
+    }
+  }
+}

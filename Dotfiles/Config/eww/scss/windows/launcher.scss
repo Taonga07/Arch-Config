@@ -1,0 +1,66 @@
+.launcher {
+  min-width: 38rem;
+  min-height: 44rem;
+
+  .widget {
+    @include floating_widget($pad: 0);
+
+    .search {
+      background-color: transparentize($fg_color, 0.95);
+
+      @if $theme =="light" {
+        background-color: transparentize($fg_color, 0.9);
+      }
+
+      padding: 1rem;
+      margin: 2rem;
+      border-radius: $radius;
+
+      .icon {
+        font-size: 1.2rem;
+      }
+
+      .input {
+        font-size: 1rem;
+        font-weight: 500;
+        caret-color: $fg_color;
+      }
+    }
+
+    .scroll {
+      @include scrollbar($effect: false);
+      background-color: transparentize($fg_color, 0.95);
+
+      @if $theme =="light" {
+        background-color: transparentize($fg_color, 0.9);
+      }
+
+      border-radius: $radius;
+      padding: 1.5rem 0 1.5rem;
+
+      .apps {
+        padding: 0 1.5rem;
+
+        .app {
+          button {
+            padding: 1rem;
+            @include button($radius: $radius);
+
+            .icon {
+              @include icon_image($size: 4rem);
+            }
+
+            .name {
+              font-size: 1.1rem;
+              font-weight: 500;
+            }
+
+            .comment {
+              color: transparentize($fg_color, 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+(defvar vol_rev false)
+
+(defwidget volume []
+  (revealer 
+    :transition "slideleft"
+    :reveal vol_rev 
+    (box
+      :class "vol"
+      (overlay
+        (box
+          :class "scale ${volume}"
+          (scale
+            :min 0 
+            :max 101
+            :value {volume == "muted" ? 0 : volume}
+            :orientation "v"
+            :flipped true
+            :onchange "volume set {}"
+          )
+        )
+        (label
+          :halign "center"
+          :valign "end"
+          :text {volume == "muted" ? "" : ""}
+        )
+      )
+    )
+  )
+)
+
+(defwidget volume_icon []
+  (label 
+    :text {
+      volume == 'muted' || volume == 0 ? "" :
+      volume > 0 && volume < 25 ? "" :
+      volume >= 25 && volume < 70 ? "" : ""
+    }
+  )
+)
+

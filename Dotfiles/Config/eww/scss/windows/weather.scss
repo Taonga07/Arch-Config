@@ -1,0 +1,58 @@
+.calendar_weather {
+  @include floating_widget($pad: 0);
+
+  .date {
+    padding: 1rem 2rem 2rem;
+    @include date($font_size: 7rem);
+  }
+
+  .bottom {
+    border-radius: $radius;
+    padding: 1.5rem;
+    background-color: transparentize($fg_color, 0.95);
+
+    @if $theme =="light" {
+      background-color: transparentize($fg_color, 0.9);
+    }
+
+    .weather {
+      @include box($pad: 0);
+      margin-top: 1.5rem;
+
+      .city {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-top: 1.5rem;
+      }
+
+      .data {
+        margin: 2rem;
+
+        .icon {
+          font-size: 3rem;
+          margin-right: 1rem;
+          text-shadow: $text_shadow;
+        }
+
+        .description,
+        .temp {
+          font-size: 1.6rem;
+          font-weight: 500;
+        }
+
+        .min_max {
+          .min_icon,
+          .max_icon {
+            margin-right: 1rem;
+            font-size: 1rem;
+          }
+
+          .min,
+          .max {
+            font-size: 1.3rem;
+          }
+        }
+      }
+    }
+  }
+}

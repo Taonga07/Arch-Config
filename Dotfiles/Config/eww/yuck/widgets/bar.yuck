@@ -1,0 +1,167 @@
+(defwidget bell []
+  (eventbox 
+    :class "bell button"
+    :onhover "eww update bell_rev=true"
+    :onhoverlost "eww update bell_rev=false"
+    :onclick "actions notifications"
+    :cursor "pointer"
+    (box
+      :class "bell"
+      :space-evenly false
+      (revealer 
+        :transition "slideleft"
+        :reveal {bell_rev || arraylength(notifications.popups) > 0} 
+        (label 
+          :class "bell count" 
+          :visible {arraylength(notifications.notifications) > 0}
+          :text {notifications.notifications[0].summary}
+          :limit-width 20
+        )
+      )
+      (overlay
+        (button 
+          :class "icon ${arraylength(notifications.notifications) > 0 ? "" : "nothing"}"
+          :onclick "actions notifications"
+          ""
+        )
+        (label
+          :class "bell indicator"
+          :visible {arraylength(notifications.notifications) > 0}
+          :valign "start" :halign "start"
+          :text ""
+        )
+      )
+    )
+  )
+)
+
+(defwidget app []
+  (eventbox
+    :class "app button"
+    :onclick "eww open --toggle overview"
+    (box
+      :class "app" 
+      :space-evenly false 
+      :spacing 5 
+      (box 
+        :class "icon ${active.class}"
+        :style "background-image: url('${active.icon}')"
+        :visible {active.icon != "null"}
+      )
+      (label 
+        :class "name" 
+        :text {active.class == "null" ? "Desktop ${active.id}" : active.class} 
+        :limit-width 20
+      )
+    )
+  )
+)
+
+(defwidget bar_clock []
+  (eventbox 
+    :class "date button" 
+    :cursor "pointer" 
+    :onclick "actions calendar"
+    :timeout "300ms"
+    (box 
+      :class "date" 
+      :space-evenly false 
+      :spacing 10
+      (clock :name "bar_clock")
+      (label :class "period" :text "")
+      (label 
+        :class "today" 
+        :text {formattime(EWW_TIME, "%a %b %d", "America/Sao_Paulo")}
+      )
+    )
+  )
+)
+
+(defwidget music [] 
+  (eventbox 
+    :class "music button"
+    :onclick "actions media"
+    :onscroll "echo {} | sed -e 's/up/next/g' -e 's/down/previous/g' | xargs playerctl -p ${mpris.favorite.name}"
+    :visible {mpris.favorite != "{}"}
+    (box
+      :class "music"
+      :space-evenly false 
+      :spacing 5
+      (box 
+        :class "icon ${mpris.favorite.name}"
+        :style "background-image: url('${mpris.favorite.icon}')"
+      )
+      (label 
+        :class "title" 
+        :text {mpris.favorite.title} 
+        :limit-width 30
+      )
+    )
+  )
+)
+
+(defwidget network []
+  (eventbox
+    (button 
+      :class "network ${network.status}"
+      {network.status == "down" ? "" : ""}
+    )
+  )
+)
+
+(defwidget bar_volume []
+  (eventbox
+    :class "bar_volume button"
+    :onhover "eww update volume_rev=true" 
+    :onhoverlost "eww update volume_rev=false"
+    (box
+      :class "bar_volume"
+      :space-evenly false
+      (eventbox
+        :cursor "pointer"
+        (button 
+          :class "icon ${volume}"
+          :onscroll "echo {} | xargs volume"
+          :onclick "volume toggle"
+          (volume_icon)
+        )
+      )
+      (revealer 
+        :transition "slideleft" 
+        :reveal volume_rev 
+        (eventbox
+          :cursor "pointer"
+          :valign "center"
+          (scale
+            :class "scale"
+            :tooltip {volume == "muted" ? "Muted" : "${volume}%"}
+            :value {volume == "muted" ? "0" : volume} 
+            :min 0 
+            :max 101
+            :onchange "volume set {}"
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget workspaces []
+  (eventbox 
+    :class "workspaces"
+    (box 
+      :class "box"
+      (for workspace in workspaces
+        (eventbox
+          :cursor "pointer"
+          :halign "center" 
+          :valign "center" 
+          (button 
+            :onclick "scripts/hyprland workspace ${workspace.id}"
+            :class "workspace ${workspace.id == active.id ? "active" : arraylength(workspace.windows) == 0 ? "empty" : "occupied"}"
+          )
+        )
+      )
+    )
+  )
+)

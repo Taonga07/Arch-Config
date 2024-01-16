@@ -1,0 +1,22 @@
+(defwidget dock_app [app] 
+  (eventbox
+    :tooltip {app.name}
+    (overlay
+      (button 
+        :class "icons" 
+        :onclick {app.address != "null" ? "scripts/hyprland window ${app.address}" : "cd ~ && gtk-launch ${app.id}"}
+        :onrightclick "scripts/apps add ${app.id}"
+        :onmiddleclick "scripts/hyprland close ${app.address}"
+        (box 
+          :class "icon" 
+          :style "background-image: url('${app.icon}')"
+        )
+      )
+      (box 
+        :class "indicator ${app.icon == active.icon ? "active" : app.address != "null" ? "open" : ""}" 
+        :valign "end"
+        :visible {app.address != "null"}
+      )
+    )
+  )
+)

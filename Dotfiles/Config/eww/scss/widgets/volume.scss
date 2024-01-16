@@ -1,0 +1,22 @@
+.vol {
+  @include floating_widget;
+  border-radius: $radius*1.1;
+  padding: .2rem;
+
+  label {
+    color: lighten($color: $bg_color, $amount: 10%);
+
+    @if $theme =="light" {
+      color: darken($color: $bg_color, $amount: 10%);
+    }
+
+    font-size: 1.6rem;
+    margin: 0 .25rem 1rem 0;
+    text-shadow: $text_shadow;
+  }
+
+  .scale {
+    @include slider($width: 3rem);
+    min-height: 15rem;
+  }
+}

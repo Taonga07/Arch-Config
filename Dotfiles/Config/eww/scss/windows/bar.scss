@@ -1,0 +1,167 @@
+.bar {
+  .widget {
+    background-color: $bg_color;
+    padding: 0.4rem;
+    font-size: 1.4rem;
+    margin-bottom: $gaps;
+    box-shadow: 0 0 5px 0 rgba(black, 0.5);
+
+    .powerbutton {
+      @include button($flat: true);
+      color: $red;
+    }
+
+    .app {
+      @include button($flat: true);
+
+      .icon {
+        @include icon_image($size: 1.5rem);
+      }
+
+      .name {
+        font-size: 1rem;
+      }
+    }
+
+    .bell {
+      @include button($flat: true);
+
+      .count {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0 0.4rem;
+        color: darken($color: $fg_color, $amount: 5%);
+
+        @if $theme =="light" {
+          color: lighten($color: $fg_color, $amount: 5%);
+        }
+      }
+
+      .nothing {
+        color: darken($color: $fg_color, $amount: 25%);
+
+        @if $theme =="light" {
+          color: lighten($color: $fg_color, $amount: 25%);
+        }
+      }
+
+      .indicator {
+        font-size: 0.8rem;
+        color: $yellow;
+        margin-left: 2px;
+        text-shadow: 0 2px 2px black;
+      }
+    }
+
+    .workspaces {
+      @include button;
+
+      .box {
+        padding: .8rem 1rem;
+
+
+        .workspace {
+          border-radius: $radius;
+          background: $accent;
+          min-height: 0.8rem;
+
+          &.empty {
+            min-width: 0.8rem;
+            background: lighten($color: $bg_color, $amount: 15%);
+
+            @if $theme =="light" {
+              background: darken($color: $bg_color, $amount: 25%);
+            }
+          }
+
+          &.occupied {
+            min-width: 1.1rem;
+          }
+
+          &.active {
+            min-width: 2rem;
+          }
+
+          &:hover {
+            &.empty {
+              background: transparentize($accent, 0.6);
+            }
+
+            &.occupied,
+            &.active {
+              background: lighten($accent, 10%);
+
+              @if $theme =="light" {
+                background: darken($accent, 5%);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .music {
+      @include button($flat: true);
+
+      .icon {
+        @include icon_image;
+      }
+
+      .title {
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+    }
+
+    .network {
+      @include button($flat: true);
+
+      &.down {
+        color: $red;
+      }
+
+      &.up {
+        color: $green;
+
+        @if $theme =="light" {
+          color: $fg_color;
+        }
+      }
+    }
+
+    .bar_volume {
+      @include button($flat: true);
+      color: $accent;
+
+      .icon {
+        @if $theme =="light" {
+          color: $fg_color;
+        }
+
+        &.muted {
+          color: $red;
+        }
+      }
+
+      .scale {
+        @include slider;
+
+        @if $theme =="light" {
+          @include slider($color: $fg_color)
+        }
+
+        min-width: 6rem;
+        margin-left: 5px;
+      }
+    }
+
+    .date {
+      @include button($flat: true);
+      @include date($font-size: 1.2rem, $tiny: true);
+
+      .period {
+        font-size: .5rem;
+      }
+    }
+  }
+}

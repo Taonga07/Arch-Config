@@ -1,0 +1,94 @@
+@mixin notifications($style) {
+
+  @if $style =='widget' {
+    @include button($radius: $radius*0.4);
+
+    &:first-child {
+      border-radius: $radius $radius $radius*0.4 $radius*0.4;
+    }
+
+    &:last-child {
+      border-radius: $radius*0.4 $radius*0.4 $radius $radius;
+    }
+
+    &:only-child {
+      border-radius: $radius;
+    }
+  }
+
+  @if $style =='popup' {
+    @include floating_widget($pad: 0);
+    min-width: 25rem;
+  }
+
+  .top {
+    font-size: 1rem;
+    padding: 1rem 1rem 0;
+
+    .icon {
+      @include icon_image($size: 1.2rem);
+    }
+
+    .app {
+      font-weight: 500;
+    }
+
+    .separator {
+      font-size: 0.4rem;
+    }
+
+    .time {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .close {
+      &:hover {
+        color: $red;
+      }
+    }
+  }
+
+  .content {
+    margin: 1rem;
+
+    .image {
+      @include icon_image($size: 4rem);
+      border-radius: $radius;
+
+      &.Screenshot {
+        min-width: 384px;
+        min-height: 216px;
+      }
+
+      &.Spotify,
+      &.Color,
+      &.Cider {
+        @include icon_image($size: 6rem);
+      }
+
+      &.Kotatogram,
+      &.discord {
+        @include icon_image($size: 5rem);
+      }
+    }
+
+    .summary {
+      font-weight: bold;
+      font-size: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .body {
+      font-size: 1rem;
+    }
+  }
+  .actions {
+    margin: 0 1rem 1rem;
+    .action {
+      @include button;
+      font-weight: 500;
+      padding: 0.5rem;
+    }
+  }
+}
